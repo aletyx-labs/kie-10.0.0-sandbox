@@ -1,0 +1,113 @@
+version: "3.8"
+services:
+  kie_sandbox:
+    container_name: kie_sandbox
+    build:
+      context: . # This specifies the build context (directory containing your Dockerfile)
+      dockerfile: Dockerfile # This specifies which Dockerfile to use
+    platform: linux/amd64
+    ports:
+      - 9090:8080
+    environment:
+      #KIE_SANDBOX_DEV_DEPLOYMENT_DMN_FORM_WEBAPP_IMAGE_URL: apache/incubator-kie-sandbox-dev-deployment-dmn-form-webapp:10.0.0
+      #KIE_SANDBOX_DEV_DEPLOYMENT_KOGITO_QUARKUS_BLANK_APP_IMAGE_URL: apache/incubator-kie-sandbox-dev-deployment-quarkus-blank-app:10.0.0
+      KIE_SANDBOX_REQUIRE_CUSTOM_COMMIT_MESSAGE: true
+      KIE_SANDBOX_EXTENDED_SERVICES_URL: ${EXTENDED_SERVICES_URL:-http://localhost:21345}
+      KIE_SANDBOX_CORS_PROXY_URL: ${CORS_PROXY_URL:-http://localhost:7081}
+      KIE_SANDBOX_ACCELERATORS: >
+        [
+                             {
+           "name": "Process Kogito jBPM Profile",
+           "iconUrl": "https://raw.githubusercontent.com/timwuthenow/sandbox-accelerators/refs/heads/main/quarkus-logo.png",
+           "gitRepositoryUrl": "https://github.com/timwuthenow/sandbox-accelerators.git",
+           "gitRepositoryGitRef": "main",
+           "dmnDestinationFolder": "src/main/resources/dmn",
+           "bpmnDestinationFolder": "src/main/resources/bpmn",
+           "otherFilesDestinationFolder": "src/main/resources/others"
+         },
+         {
+           "name": "Decisions Kogito jBPM Profile",
+           "iconUrl": "https://raw.githubusercontent.com/timwuthenow/sandbox-accelerators/refs/heads/main/quarkus-logo.png",
+           "gitRepositoryUrl": "https://github.com/timwuthenow/sandbox-accelerators.git",
+           "gitRepositoryGitRef": "dmn",
+           "dmnDestinationFolder": "src/main/resources/dmn",
+           "bpmnDestinationFolder": "src/main/resources/bpmn",
+           "otherFilesDestinationFolder": "src/main/resources/others"
+         }
+        ]
+
+      KIE_SANDBOX_AUTH_PROVIDERS: >
+        [
+         {
+             "id": "github_dot_com",
+             "domain": "github.com",
+             "supportedGitRemoteDomains": [
+                 "github.com",
+                 "gist.github.com"
+             ],
+             "type": "github",
+             "name": "GitHub",
+             "enabled": true,
+             "iconPath": "",
+             "group": "git"
+         },
+         {
+             "id": "gitlab_dot_com",
+             "domain": "gitlab.com",
+             "supportedGitRemoteDomains": [
+                 "gitlab.com"
+             ],
+             "type": "gitlab",
+             "name": "GitLab",
+             "enabled": true,
+             "iconPath": "images/gitlab-logo.svg",
+             "group": "git"
+         },
+         {
+             "id": "bitbucket_dot_com",
+             "domain": "bitbucket.com",
+             "supportedGitRemoteDomains": [
+                 "bitbucket.com"
+             ],
+             "type": "bitbucket",
+             "name": "Bitbucket",
+             "enabled": true,
+             "iconPath": "images/bitbucket-logo.svg",
+             "group": "git"
+         },
+         {
+             "enabled": true,
+             "id": "openshift",
+             "type": "openshift",
+             "name": "OpenShift",
+             "iconPath": "images/openshift-logo.svg",
+             "group": "cloud"
+         },
+         {
+             "enabled": true,
+             "id": "kubernetes",
+             "type": "kubernetes",
+             "name": "Kubernetes",
+             "iconPath": "images/kubernetes-logo.svg",
+             "group": "cloud"
+         }
+
+        ]
+
+    depends_on:
+      - extended_services
+      - cors
+
+  extended_services:
+    container_name: extended_services
+    platform: linux/amd64
+    image: apache/incubator-kie-sandbox-extended-services:10.0.0
+    ports:
+      - 21345:21345
+
+  cors:
+    image: apache/incubator-kie-cors-proxy:10.0.0
+    platform: linux/amd64
+    container_name: cors
+    ports:
+      - 7081:8080
