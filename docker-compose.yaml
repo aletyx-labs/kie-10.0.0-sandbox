@@ -139,11 +139,3 @@ services:
     container_name: cors
     ports:
       - 7081:8080
-
-  commit-validator:
-    build:
-      context: ./commit-validator
-    ports:
-      - "3000:3000"
-    environment:
-      - PORT=3000
