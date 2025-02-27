@@ -14,7 +14,7 @@ services:
       KIE_SANDBOX_REQUIRE_CUSTOM_COMMIT_MESSAGE: true
       KIE_SANDBOX_EXTENDED_SERVICES_URL: ${EXTENDED_SERVICES_URL:-http://localhost:21345}
       KIE_SANDBOX_CORS_PROXY_URL: ${CORS_PROXY_URL:-http://localhost:7081}
-      KIE_SANDBOX_CUSTOM_COMMIT_MESSAGES_VALIDATION_SERVICE_URL: http://localhost:3000/validate
+      KIE_SANDBOX_CUSTOM_COMMIT_MESSAGE_VALIDATION_SERVICE_URL: http://localhost:3000/validate
       KIE_SANDBOX_EDITORS: >
         [
           {
@@ -139,3 +139,11 @@ services:
     container_name: cors
     ports:
       - 7081:8080
+
+  commit-validator:
+    build:
+      context: ./commit-validator
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
