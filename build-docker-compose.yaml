@@ -2,7 +2,9 @@ version: "3.8"
 services:
   playground:
     container_name: playground
-    image: timwuthenow/aletyx-playground:latest
+    build:
+      context: . # This specifies the build context (directory containing your Dockerfile)
+      dockerfile: Dockerfile # This specifies which Dockerfile to use
     platform: linux/amd64
     ports:
       - 9090:8080
