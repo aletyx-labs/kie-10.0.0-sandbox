@@ -13,7 +13,7 @@
 			.text {
 				fill: #FFFFFF;
 				font-family: Poppins, sans-serif;
-				font-size: 200px;
+				font-size: 170px;
 				font-weight: 200;
 				letter-spacing: -1px;
 			}
