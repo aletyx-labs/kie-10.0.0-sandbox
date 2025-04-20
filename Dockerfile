@@ -1,6 +1,7 @@
-# Use the existing community image as the base
-FROM apache/incubator-kie-sandbox-webapp:main
-
+# This Dockerfile is used to build a custom KIE Sandbox image with Aletyx branding.
+# For community image use: apache/incubator-kie-sandbox-webapp:main
+# For enterprise image use: aletyx-playground:10.0.0
+FROM aletyx-playground:10.0.0
 
 # Set working directory
 WORKDIR /kie-sandbox/app
