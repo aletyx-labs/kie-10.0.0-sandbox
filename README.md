@@ -43,7 +43,7 @@ To build a custom image:
 2. Run Docker Compose with the build flag:
 
    ```
-   docker-compose up --build -d
+   docker-compose -f build-docker-compose.yaml up --build
    ```
 
 ## Customization Options
